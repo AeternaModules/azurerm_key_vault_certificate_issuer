@@ -30,5 +30,27 @@ EOT
       phone         = optional(string)
     }))
   }))
+  validation {
+    condition = alltrue([
+      for k, v in var.key_vault_certificate_issuers : (
+        contains(["DigiCert", "GlobalSign", "OneCertV2-PrivateCA", "OneCertV2-PublicCA", "SslAdminV2"], v.provider_name)
+      )
+    ])
+    error_message = "must be one of: DigiCert, GlobalSign, OneCertV2-PrivateCA, OneCertV2-PublicCA, SslAdminV2"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.key_vault_certificate_issuers : (
+        v.org_id == null || (length(v.org_id) > 0)
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  # --- Unconfirmed validation candidates, derived from azurerm_key_vault_certificate_issuer's provider source ---
+  # Not auto-enabled: either a bespoke provider validator we can't safely translate,
+  # or a path that crosses a list-typed block (needs its own for_each wrapping).
+  # Review, translate into a real validation{} block above, and delete once confirmed.
+  # path: name
+  #   source:    [from validate.CertificateIssuerName] !matched
 }
 
