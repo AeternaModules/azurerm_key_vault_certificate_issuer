@@ -9,6 +9,8 @@ Optional:
     - account_id
     - org_id
     - password
+    - password_key_vault_id (alternative to password - read from Key Vault instead)
+    - password_key_vault_secret_name (alternative to password - read from Key Vault instead)
     - admin (block):
         - email_address (required)
         - first_name (optional)
@@ -17,12 +19,14 @@ Optional:
 EOT
 
   type = map(object({
-    key_vault_id  = string
-    name          = string
-    provider_name = string
-    account_id    = optional(string)
-    org_id        = optional(string)
-    password      = optional(string)
+    key_vault_id                   = string
+    name                           = string
+    provider_name                  = string
+    account_id                     = optional(string)
+    org_id                         = optional(string)
+    password                       = optional(string)
+    password_key_vault_id          = optional(string)
+    password_key_vault_secret_name = optional(string)
     admin = optional(list(object({
       email_address = string
       first_name    = optional(string)
