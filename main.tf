@@ -9,7 +9,7 @@ resource "azurerm_key_vault_certificate_issuer" "key_vault_certificate_issuers" 
   password      = each.value.password
 
   dynamic "admin" {
-    for_each = each.value.admin != null ? [each.value.admin] : []
+    for_each = each.value.admin != null ? each.value.admin : []
     content {
       email_address = admin.value.email_address
       first_name    = admin.value.first_name
